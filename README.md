@@ -1,0 +1,1 @@
+# alpine-hashistack-base
