@@ -17,7 +17,7 @@ tasks:
         cat <<EOF > /usr/bin/first-boot
         #!/bin/sh
         set -xe
-        ROOT_PART="/dev/disk/by-label/ROOT"
+        ROOT_PART="\$(df -hT | grep /$ | awk '{print \$1}')"
         DISK_DEV="/dev/\$(lsblk -ndo pkname \${ROOT_PART})"
         echo ", +" | sfdisk -N 2 \${DISK_DEV}
         partprobe
