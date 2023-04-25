@@ -11,7 +11,6 @@ download-iso:
 	wget -c -P $(builddir)/iso $(alpine_download_uri).asc
 
 pre-build:
-	test -d $(builddir)/encrypt || mkdir -p $(builddir)/encrypt
 	task -t Taskfile.local.yml
 
 build: pre-build
