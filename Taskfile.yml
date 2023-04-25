@@ -1,0 +1,28 @@
+version: '3'
+
+dotenv: ['./taskfiles/files/base.cfg']
+
+includes:
+  # kernel: ./taskfiles/00-kernel.yml
+  # system: ./taskfiles/01-system.yml
+  # users: ./taskfiles/02-users.yml
+  # networking: ./taskfiles/03-networking.yml
+  # services: ./taskfiles/04-services.yml
+  containerd: ./taskfiles/05-containerd.yml
+  # consul: /taskfiles/06-consul.yml
+  # nomad: /taskfiles/07-nomad.yml
+  # firstboot: /taskfiles/99-first-boot.yml
+
+tasks:
+  default:
+    cmds:
+      # - env
+      # - task: kernel
+      # - task: system
+      # - task: users
+      # - task: networking
+      # - task: services
+      - task: containerd
+      # - task: consul
+      # - task: nomad
+      # - task: firstboot

@@ -1,0 +1,18 @@
+version: '3'
+tasks:
+  default:
+    cmds:
+      - task: add-extras
+      - task: enable-containerd
+  add-extras:
+    cmds:
+      - task: addpkgs
+        vars: {PKGS: "--no-cache containerd nerdctl buildkit containerd-openrc --repository http://dl-cdn.alpinelinux.org/alpine/edge/community"}
+  enable-containerd:
+    cmds:
+      - rc-update add containerd boot
+      - rc-update add buildkitd boot
+
+  addpkgs:
+    cmds:
+      - apk add {{ .PKGS }}
