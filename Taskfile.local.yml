@@ -1,0 +1,21 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task: generate-keys
+
+  generate-keys:
+    cmds:
+      - task: generate-nomad-key
+      - task: generate-consul-key
+  generate-nomad-key:
+    cmds:
+      - openssl rand -base64 32 > target/encrypt/nomad.key
+    status:
+      - test -f target/encrypt/nomad.key
+  generate-consul-key:
+    cmds:
+      - openssl rand -base64 32 > target/encrypt/consul.key
+    status:
+      - test -f target/encrypt/consul.key
