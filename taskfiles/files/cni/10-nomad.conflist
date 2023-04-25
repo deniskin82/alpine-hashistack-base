@@ -1,0 +1,30 @@
+{
+  "cniVersion": "0.3.1",
+  "name": "bridge",
+  "plugins": [
+    {
+      "type": "bridge",
+      "bridge": "cni0",
+      "isGateway": true,
+      "ipMasq": true,
+      "ipam": {
+        "type": "host-local",
+        "ranges": [
+          [{"subnet": "172.19.0.0/24"}]
+        ],
+      "routes": [{"dst": "0.0.0.0/0"}]
+      }
+    },
+    {
+      "type": "loopback",
+      "name": "lo"
+    },
+    {
+      "type": "portmap",
+      "capabilities": {
+        "portMappings": true
+      },
+      "snat": true
+    }
+  ]
+}

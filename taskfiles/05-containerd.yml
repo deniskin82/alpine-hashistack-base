@@ -4,6 +4,7 @@ tasks:
     cmds:
       - task: add-extras
       - task: enable-containerd
+      - task: add-cni-config
   add-extras:
     cmds:
       - task: addpkgs
@@ -12,7 +13,10 @@ tasks:
     cmds:
       - rc-update add containerd boot
       - rc-update add buildkitd boot
-
+  add-cni-config:
+    cmds:
+      - install -m644 -D ${TASKD_FILES}/cni/10-nomad.conflist /etc/cni/net.d/10-nomad.conflist
+        
   addpkgs:
     cmds:
       - apk add {{ .PKGS }}

@@ -1,0 +1,47 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task: ca-certificates
+      - task: add-extras
+      - task: set-motd
+      - task: enable-colorprompt
+      - task: ll-alias
+      - task: label-root-part
+  ca-certificates:
+    cmds:
+      - task: addpkgs
+        vars: {PKGS: "--no-cache ca-certificates alpine-conf"}
+      - update-ca-certificates
+  add-extras:
+    cmds:
+      - task: addpkgs
+        vars: {PKGS: "--no-cache vim e2fsprogs-extra htop curl wget bash bash-completion findutils openrc syslog-ng avahi-tools bind-tools jq shadow iptables ip6tables cifs-utils"}
+      - sed -i 's/\/bin\/ash/\/bin\/bash/g' /etc/passwd    
+  enable-colorprompt:
+    cmds:
+      - mv /etc/profile.d/color_prompt.sh.disabled /etc/profile.d/color_prompt.sh
+    preconditions:
+      - test -f /etc/profile.d/color_prompt.sh.disabled
+  label-root-part:
+    cmds:
+      - e2label /dev/sda2 "ROOT"
+  set-motd:
+    cmds:
+      - |
+        cat <<EOF > /etc/motd
+
+        Welcome to Alpine!
+
+        EOF
+  ll-alias:
+    cmds:
+      - |
+        cat <<EOF > /etc/profile.d/ll.sh
+        alias ls="ls --color"
+        alias ll="ls -l"
+        EOF
+  addpkgs:
+    cmds:
+      - apk add {{ .PKGS }}

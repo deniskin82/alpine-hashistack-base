@@ -1,0 +1,48 @@
+version: '3'
+tasks:
+  default:
+    cmds:
+      - task: add-extras
+      - task: bin-firstboot
+      - task: init-firstboot
+      - task: rc-update
+
+  add-extras:
+    cmds:
+      - task: addpkgs
+        vars: {PKGS: "--no-cache dosfstools parted sfdisk lsblk blkid"}
+  bin-firstboot:
+    cmds:
+      - |
+        cat <<EOF > /usr/bin/first-boot
+        #!/bin/sh
+        set -xe
+        ROOT_PART="/dev/disk/by-label/ROOT"
+        DISK_DEV="/dev/\$(lsblk -ndo pkname \${ROOT_PART})"
+        echo ", +" | sfdisk -N 2 \${DISK_DEV}
+        partprobe
+        resize2fs \${ROOT_PART}
+        rc-update del first-boot
+        rm /etc/init.d/first-boot /usr/bin/first-boot
+        reboot
+        EOF
+  init-firstboot:
+    cmds:
+      - |
+        cat <<EOF > /etc/init.d/first-boot
+        #!/sbin/openrc-run
+        command="/usr/bin/first-boot"
+        command_background=false
+        depend() {
+          after modules
+          need localmount
+        }
+        EOF
+  rc-update:
+    cmds:
+      - chmod +x /etc/init.d/first-boot /usr/bin/first-boot
+      - rc-update add first-boot
+
+  addpkgs:
+    cmds:
+      - apk add {{ .PKGS }}
