@@ -137,6 +137,11 @@ build {
     destination = "encrypt"
   }
 
+  provisioner "file" {
+    source = "target/tools"
+    destination = "tools"
+  }
+
   provisioner "shell" {
     execute_command = "/bin/sh -x '{{ .Path }}'"
     scripts = [
