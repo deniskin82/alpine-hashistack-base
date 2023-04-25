@@ -18,7 +18,7 @@ tasks:
     cmds:
       - task: addpkgs
         vars: {PKGS: "--no-cache vim e2fsprogs-extra htop curl wget bash bash-completion findutils openrc syslog-ng avahi-tools bind-tools jq shadow iptables ip6tables cifs-utils"}
-      - sed -i 's/\/bin\/ash/\/bin\/bash/g' /etc/passwd    
+      - sed -i 's@/bin/ash@/bin/bash@g' /etc/passwd    
   enable-colorprompt:
     cmds:
       - mv /etc/profile.d/color_prompt.sh.disabled /etc/profile.d/color_prompt.sh
