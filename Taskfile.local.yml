@@ -5,8 +5,30 @@ dotenv: ['./taskfiles/files/base.cfg']
 tasks:
   default:
     cmds:
-      - task: generate-keys
+      - task: download-iso
       - task: download-tools
+      - task: generate-keys
+
+  download-iso:
+    cmds:
+      - task: make-dir
+        vars:
+          DIR: ${BUILDDIR}/iso
+      - task: download-pkg
+        vars: {
+          SRC: "https://dl-cdn.alpinelinux.org/alpine/v3.17/releases/x86_64/alpine-standard-${ALPINE_VERSION}-x86_64.iso",
+          DST: "${BUILDDIR}/iso/alpine-standard-${ALPINE_VERSION}-x86_64.iso"
+        }
+      - task: download-pkg
+        vars: {
+          SRC: "https://dl-cdn.alpinelinux.org/alpine/v3.17/releases/x86_64/alpine-standard-${ALPINE_VERSION}-x86_64.iso.sha256",
+          DST: "${BUILDDIR}/iso/alpine-standard-${ALPINE_VERSION}-x86_64.iso.sha256"
+        }
+      - task: download-pkg
+        vars: {
+          SRC: "https://dl-cdn.alpinelinux.org/alpine/v3.17/releases/x86_64/alpine-standard-${ALPINE_VERSION}-x86_64.iso.asc",
+          DST: "${BUILDDIR}/iso/alpine-standard-${ALPINE_VERSION}-x86_64.iso.asc"
+        }
   download-tools:
     cmds:
       - task: make-tools
