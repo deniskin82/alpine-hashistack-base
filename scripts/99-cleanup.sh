@@ -2,7 +2,7 @@
 
 set -ux
 
-rm -rf /var/cache/apk/* taskfiles Taskfile.yml encrypt
+rm -rf /var/cache/apk/* taskfiles Taskfile.yml encrypt tools
 
 dd if=/dev/zero of=/EMPTY bs=1M
 rm -f /EMPTY
