@@ -7,8 +7,14 @@ tasks:
 
   generate-keys:
     cmds:
+      - task: make-dir
       - task: generate-nomad-key
       - task: generate-consul-key
+  make-dir:
+    cmds:
+      - mkdir -p target/encrypt
+    status:
+      - test -d target/encrypt
   generate-nomad-key:
     cmds:
       - openssl rand -base64 32 > target/encrypt/nomad.key
