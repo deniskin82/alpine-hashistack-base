@@ -1,27 +1,82 @@
 version: '3'
 
+dotenv: ['./taskfiles/files/base.cfg']
+
 tasks:
   default:
     cmds:
       - task: generate-keys
-
+      - task: download-tools
+  download-tools:
+    cmds:
+      - task: make-tools
+      - task: download-nomad
+      - task: download-consul
+      - task: download-vault
+      - task: download-gotask
   generate-keys:
     cmds:
-      - task: make-dir
+      - task: make-encrypt
       - task: generate-nomad-key
       - task: generate-consul-key
-  make-dir:
+  make-encrypt:
     cmds:
-      - mkdir -p target/encrypt
-    status:
-      - test -d target/encrypt
+      - task: make-dir
+        vars:
+          DIR: ${BUILDDIR}/encrypt
+  make-tools:
+    cmds:
+      - task: make-dir
+        vars:
+          DIR: ${BUILDDIR}/tools
   generate-nomad-key:
     cmds:
-      - openssl rand -base64 32 > target/encrypt/nomad.key
+      - openssl rand -base64 32 > ${BUILDDIR}/encrypt/nomad.key
     status:
-      - test -f target/encrypt/nomad.key
+      - test -f ${BUILDDIR}/encrypt/nomad.key
   generate-consul-key:
     cmds:
-      - openssl rand -base64 32 > target/encrypt/consul.key
+      - openssl rand -base64 32 > ${BUILDDIR}/encrypt/consul.key
     status:
-      - test -f target/encrypt/consul.key
+      - test -f ${BUILDDIR}/encrypt/consul.key
+  download-nomad:
+    cmds:
+      - task: download-pkg
+        vars: {
+          SRC: "https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip",
+          DST: "${BUILDDIR}/tools/nomad_${NOMAD_VERSION}_linux_amd64.zip"
+        }
+  download-consul:
+    cmds:
+      - task: download-pkg
+        vars: {
+          SRC: "https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip",
+          DST: "${BUILDDIR}/tools/consul_${CONSUL_VERSION}_linux_amd64.zip"
+        }      
+  download-vault:
+    cmds:
+      - task: download-pkg
+        vars: {
+          SRC: "https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip",
+          DST: "${BUILDDIR}/tools/vault_${VAULT_VERSION}_linux_amd64.zip"
+        }      
+  download-gotask:
+    cmds:
+      - task: download-pkg
+        vars: {
+          SRC: "https://github.com/go-task/task/releases/download/${TASK_VERSION}/task_linux_amd64.tar.gz",
+          DST: "${BUILDDIR}/tools/task_linux_amd64_${TASK_VERSION}.tar.gz"
+        }
+  download-pkg:
+    cmds:
+      - echo "Downloading - {{ (splitList "/" .DST | last | quote) }}"
+      - curl -sSL -o {{ .DST }} {{ .SRC }}
+    silent: true
+    status:
+      - test -f {{ .DST }}
+  make-dir:
+    cmds:
+      - mkdir -v -p {{ .DIR }}
+    silent: true
+    status:
+      - test -d {{ .DIR }}
