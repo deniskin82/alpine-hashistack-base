@@ -11,10 +11,10 @@ variable "iso_checksum" {
 
 variable "iso_file" {
   type    = string
-  default = "./iso/alpine-standard-3.17.3-x86_64.iso"
+  default = "./target/iso/alpine-standard-3.17.3-x86_64.iso"
 }
 
-variable "name" {
+variable "vm_name" {
   type    = string
   default = "alpine-base"
 }
@@ -65,9 +65,14 @@ variable "ssh_wait_timeout" {
   default = "90s"
 }
 
-variable "env" {
+variable "format" {
   type    = string
-  default = ""
+  default = "raw"
+}
+
+variable "output_directory" {
+  type    = string
+  default = "./target/build/"
 }
 
 source "qemu" "alpine-base" {
@@ -98,22 +103,72 @@ source "qemu" "alpine-base" {
     "${var.root_password}<enter><wait>",
     "sed -i 's/^#PermitRootLogin .*/PermitRootLogin yes/g' /etc/ssh/sshd_config<enter>",
     "service sshd restart<enter>",
-    "exit<enter>"
+    "exit<enter><wait20s>"
   ]
 
   http_directory = "http"
 
-  disk_size        = var.disk_size
+  disk_size        = "${var.disk_size}"
   disk_interface   = "ide"
-  format           = "raw"
-  output_directory = "output"
+  format           = "${var.format}"
+  output_directory = "${var.output_directory}"
 
   shutdown_command = "/sbin/poweroff"
 
   ssh_wait_timeout = "${var.ssh_wait_timeout}"
-  vm_name          = "disk.raw"
+  vm_name          = "${var.vm_name}.${var.format}"
 }
 
 build {
   sources = ["source.qemu.alpine-base"]
+
+  provisioner "file" {
+    source = "taskfiles"
+    destination = "taskfiles"
+  }
+
+  provisioner "file" {
+    source = "Taskfile.yml"
+    destination = "Taskfile.yml"
+  }
+
+  provisioner "shell-local" {
+    inline = [
+      "set -e",
+      "task -t Taskfile.local.yml"
+    ]
+  }
+
+  provisioner "file" {
+    source = "target/encrypt"
+    destination = "encrypt"
+  }
+
+  provisioner "shell" {
+    execute_command = "/bin/sh -x '{{ .Path }}'"
+    scripts = [
+      "scripts/00-go-task.sh",
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "set -e",
+      "task -d ."
+    ]
+  }
+
+  provisioner "shell" {
+    execute_command = "/bin/sh -x '{{ .Path }}'"
+    scripts = [
+      "scripts/99-cleanup.sh"
+    ]
+  }
+
+  // post-processors {
+  //   post-processor "compress" {
+  //     output = "output/disk.raw.tar.gz"
+  //     compression_level = 9
+  //   }
+  // }
 }
