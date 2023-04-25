@@ -16,18 +16,18 @@ tasks:
           DIR: ${BUILDDIR}/iso
       - task: download-pkg
         vars: {
-          SRC: "https://dl-cdn.alpinelinux.org/alpine/v3.17/releases/x86_64/alpine-standard-${ALPINE_VERSION}-x86_64.iso",
-          DST: "${BUILDDIR}/iso/alpine-standard-${ALPINE_VERSION}-x86_64.iso"
+          SRC: "https://dl-cdn.alpinelinux.org/alpine/v${ALPINE_VERSION}/releases/x86_64/alpine-standard-${ALPINE_RELEASE}-x86_64.iso",
+          DST: "${BUILDDIR}/iso/alpine-standard-${ALPINE_RELEASE}-x86_64.iso"
         }
       - task: download-pkg
         vars: {
-          SRC: "https://dl-cdn.alpinelinux.org/alpine/v3.17/releases/x86_64/alpine-standard-${ALPINE_VERSION}-x86_64.iso.sha256",
-          DST: "${BUILDDIR}/iso/alpine-standard-${ALPINE_VERSION}-x86_64.iso.sha256"
+          SRC: "https://dl-cdn.alpinelinux.org/alpine/v${ALPINE_VERSION}/releases/x86_64/alpine-standard-${ALPINE_RELEASE}-x86_64.iso.sha256",
+          DST: "${BUILDDIR}/iso/alpine-standard-${ALPINE_RELEASE}-x86_64.iso.sha256"
         }
       - task: download-pkg
         vars: {
-          SRC: "https://dl-cdn.alpinelinux.org/alpine/v3.17/releases/x86_64/alpine-standard-${ALPINE_VERSION}-x86_64.iso.asc",
-          DST: "${BUILDDIR}/iso/alpine-standard-${ALPINE_VERSION}-x86_64.iso.asc"
+          SRC: "https://dl-cdn.alpinelinux.org/alpine/v${ALPINE_VERSION}/releases/x86_64/alpine-standard-${ALPINE_RELEASE}-x86_64.iso.asc",
+          DST: "${BUILDDIR}/iso/alpine-standard-${ALPINE_RELEASE}-x86_64.iso.asc"
         }
   download-tools:
     cmds:
