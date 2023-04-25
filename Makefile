@@ -10,7 +10,10 @@ download-iso:
 	wget -c -P $(builddir)/iso $(alpine_download_uri).sha256
 	wget -c -P $(builddir)/iso $(alpine_download_uri).asc
 
-build:
+pre-build:
+	test -d $(builddir)/encrypt || mkdir -p $(builddir)/encrypt
+
+build: pre-build
 	packer build -force -only qemu.alpine-base .
 
 .PHONY: download-iso build
