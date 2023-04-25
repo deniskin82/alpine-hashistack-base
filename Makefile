@@ -12,6 +12,7 @@ download-iso:
 
 pre-build:
 	test -d $(builddir)/encrypt || mkdir -p $(builddir)/encrypt
+	task -t Taskfile.local.yml
 
 build: pre-build
 	packer build -force -only qemu.alpine-base .

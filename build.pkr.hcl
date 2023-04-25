@@ -132,12 +132,6 @@ build {
     destination = "Taskfile.yml"
   }
 
-  provisioner "shell-local" {
-    inline = [
-      "task -t Taskfile.local.yml"
-    ]
-  }
-
   provisioner "file" {
     source = "target/encrypt"
     destination = "encrypt"
