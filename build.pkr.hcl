@@ -134,7 +134,6 @@ build {
 
   provisioner "shell-local" {
     inline = [
-      "set -e",
       "task -t Taskfile.local.yml"
     ]
   }
@@ -153,7 +152,6 @@ build {
 
   provisioner "shell" {
     inline = [
-      "set -e",
       "task -d ."
     ]
   }
