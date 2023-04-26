@@ -1,0 +1,37 @@
+version: '3'
+tasks:
+  default:
+    cmds:
+      - task: add-extras
+      - task: patch-initd
+      - task: patch-confd
+      - task: add-avahi-service
+      - task: enable-consul
+  enable-consul:
+    cmds:
+      - rc-update add consul  
+  add-extras:
+    cmds:
+      - task: addpkgs
+        vars: {PKGS: "--no-cache consul --repository http://dl-cdn.alpinelinux.org/alpine/edge/community"}
+  patch-initd:
+    cmds:
+      - sed -i "s@CONSUL_DATADIR@${CONSUL_DATADIR}@" ${TASKD_FILES}/consul/consul.initd
+      - install -m755 -D ${TASKD_FILES}/consul/consul.initd /etc/init.d/consul
+  patch-confd:
+    vars:
+      ENC_KEY:
+        sh: curl -sSL http://${PACKER_HTTP_ADDR}/encrypt/consul.key #consul keygen
+    cmds:
+      - usermod -d ${CONSUL_DATADIR} consul
+      - sed "s@ENCRYPT_KEY@{{.ENC_KEY}}@" -i ${TASKD_FILES}/consul/encrypt.json 
+      - sed "s@CONSUL_DATADIR@${CONSUL_DATADIR}@;s@BIND_ETH@${BIND_ETH}@" -i ${TASKD_FILES}/consul/server.json
+      - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/server.json /etc/consul/server.json
+      - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/encrypt.json /etc/consul/encrypt.json
+  add-avahi-service:
+    cmds:
+      - install -m644 -D ${TASKD_FILES}/consul/consul.service /etc/avahi/services/consul.service
+
+  addpkgs:
+    cmds:
+      - apk add {{ .PKGS }}

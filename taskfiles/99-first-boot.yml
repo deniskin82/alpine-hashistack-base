@@ -19,7 +19,7 @@ tasks:
         set -xe
         ROOT_PART="\$(df -hT | grep /$ | awk '{print \$1}')"
         DISK_DEV="/dev/\$(lsblk -ndo pkname \${ROOT_PART})"
-        echo ", +" | sfdisk -N 2 \${DISK_DEV}
+        echo ", +" | sfdisk -fq --no-reread -N 2 \${DISK_DEV}
         partprobe
         resize2fs \${ROOT_PART}
         rc-update del first-boot
