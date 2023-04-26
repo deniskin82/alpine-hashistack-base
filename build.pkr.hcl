@@ -11,7 +11,7 @@ variable "iso_checksum" {
 
 variable "iso_file" {
   type    = string
-  default = "./target/iso/alpine-standard-3.17.3-x86_64.iso"
+  default = "./http/iso/alpine-standard-3.17.3-x86_64.iso"
 }
 
 variable "vm_name" {
@@ -132,18 +132,8 @@ build {
     destination = "Taskfile.yml"
   }
 
-  provisioner "file" {
-    source = "target/encrypt"
-    destination = "encrypt"
-  }
-
-  provisioner "file" {
-    source = "target/tools"
-    destination = "tools"
-  }
-
   provisioner "shell" {
-    execute_command = "/bin/sh -x '{{ .Path }}'"
+    execute_command = "{{.Vars}} /bin/sh -x '{{ .Path }}'"
     scripts = [
       "scripts/00-go-task.sh",
     ]
