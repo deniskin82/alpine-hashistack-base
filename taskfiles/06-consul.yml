@@ -24,10 +24,10 @@ tasks:
         sh: curl -sSL http://${PACKER_HTTP_ADDR}/vault/consul.key #consul keygen
     cmds:
       - usermod -d ${CONSUL_DATADIR} consul
-      - sed "s@ENCRYPT_KEY@{{.ENC_KEY}}@" -i ${TASKD_FILES}/consul/encrypt.json 
-      - sed "s@CONSUL_DATADIR@${CONSUL_DATADIR}@;s@BIND_ETH@${BIND_ETH}@" -i ${TASKD_FILES}/consul/server.json
-      - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/server.json /etc/consul/server.json
-      - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/encrypt.json /etc/consul/encrypt.json
+      - sed "s@ENCRYPT_KEY@{{.ENC_KEY}}@" -i ${TASKD_FILES}/consul/encrypt.hcl
+      - sed "s@CONSUL_DATADIR@${CONSUL_DATADIR}@;s@BIND_ETH@${BIND_ETH}@" -i ${TASKD_FILES}/consul/server.hcl
+      - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/server.hcl /etc/consul/server.hcl
+      - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/encrypt.hcl /etc/consul/encrypt.hcl
   add-avahi-service:
     cmds:
       - install -m644 -D ${TASKD_FILES}/consul/consul.service /etc/avahi/services/consul.service
