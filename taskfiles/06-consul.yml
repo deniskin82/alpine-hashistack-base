@@ -21,7 +21,7 @@ tasks:
   patch-confd:
     vars:
       ENC_KEY:
-        sh: curl -sSL http://${PACKER_HTTP_ADDR}/encrypt/consul.key #consul keygen
+        sh: curl -sSL http://${PACKER_HTTP_ADDR}/vault/consul.key #consul keygen
     cmds:
       - usermod -d ${CONSUL_DATADIR} consul
       - sed "s@ENCRYPT_KEY@{{.ENC_KEY}}@" -i ${TASKD_FILES}/consul/encrypt.json 
