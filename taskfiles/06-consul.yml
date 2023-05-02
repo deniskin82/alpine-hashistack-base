@@ -19,6 +19,7 @@ tasks:
       - sed -i "s@CONSUL_DATADIR@${CONSUL_DATADIR}@" ${TASKD_FILES}/consul/consul.initd
       - install -m755 -D ${TASKD_FILES}/consul/consul.initd /etc/init.d/consul
   patch-confd:
+    silent: true
     vars:
       ENC_KEY:
         sh: curl -sSL http://${PACKER_HTTP_ADDR}/vault/consul.key #consul keygen
