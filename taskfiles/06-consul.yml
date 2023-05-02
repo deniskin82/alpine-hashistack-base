@@ -19,13 +19,13 @@ tasks:
       - sed -i "s@CONSUL_DATADIR@${CONSUL_DATADIR}@" ${TASKD_FILES}/consul/consul.initd
       - install -m755 -D ${TASKD_FILES}/consul/consul.initd /etc/init.d/consul
   patch-confd:
-    silent: true
     vars:
       ENC_KEY:
         sh: curl -sSL http://${PACKER_HTTP_ADDR}/vault/consul.key #consul keygen
     cmds:
       - usermod -d ${CONSUL_DATADIR} consul
-      - sed "s@ENCRYPT_KEY@{{.ENC_KEY}}@" -i ${TASKD_FILES}/consul/encrypt.hcl
+      - cmd: sed "s@ENCRYPT_KEY@{{.ENC_KEY}}@" -i ${TASKD_FILES}/consul/encrypt.hcl
+        silent: true
       - sed "s@CONSUL_DATADIR@${CONSUL_DATADIR}@;s@BIND_ETH@${BIND_ETH}@" -i ${TASKD_FILES}/consul/server.hcl
       - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/server.hcl /etc/consul/server.hcl
       - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/encrypt.hcl /etc/consul/encrypt.hcl
