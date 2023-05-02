@@ -60,7 +60,6 @@ tasks:
   pull-nomad-key:
     cmds:
       - cp {{.VAULT_REPO}}/encrypt/nomad.key http/vault/nomad.key
-    status:
   pull-consul-key:
     cmds:
       - cp {{.VAULT_REPO}}/encrypt/consul.key http/vault/consul.key
