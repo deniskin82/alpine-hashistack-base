@@ -7,6 +7,6 @@ tls {
     key_file = "/etc/consul/ssl/consul-key.pem"
   }
   internal_rpc {
-    verify_server_hostname = true
+    verify_server_hostname = false
   }
 }
