@@ -1,6 +1,9 @@
 version: '3'
 
 dotenv: ['./taskfiles/files/base.cfg']
+vars:
+  VAULT_REPO: '../vault/local'
+  BIN_DIR: '~/bin'
 
 tasks:
   default:
@@ -45,7 +48,7 @@ tasks:
     cmds:
       - task: make-dir
         vars:
-          DIR: http/encrypt
+          DIR: http/vault
   make-tools:
     cmds:
       - task: make-dir
@@ -53,14 +56,16 @@ tasks:
           DIR: http/tools
   generate-nomad-key:
     cmds:
-      - openssl rand -base64 32 > http/encrypt/nomad.key
+      - cp {{.VAULT_REPO}}/encrypt/nomad.key http/vault/nomad.key
     status:
-      - test -f http/encrypt/nomad.key
+      - test -f {{.VAULT_REPO}}/encrypt/nomad.key
+      - test ! -f http/vault/nomad.key
   generate-consul-key:
     cmds:
-      - openssl rand -base64 32 > http/encrypt/consul.key
+      - cp {{.VAULT_REPO}}/encrypt/consul.key http/vault/consul.key
     status:
-      - test -f http/encrypt/consul.key
+      - test -f {{.VAULT_REPO}}/encrypt/consul.key
+      - test ! -f http/vault/consul.key
   download-nomad:
     cmds:
       - task: download-pkg
