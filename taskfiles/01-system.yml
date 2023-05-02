@@ -9,6 +9,7 @@ tasks:
       - task: enable-colorprompt
       - task: ll-alias
       - task: label-root-part
+      - task: set-fstab
   ca-certificates:
     cmds:
       - task: addpkgs
@@ -17,7 +18,7 @@ tasks:
   add-extras:
     cmds:
       - task: addpkgs
-        vars: {PKGS: "--no-cache vim e2fsprogs-extra htop curl wget bash bash-completion findutils openrc syslog-ng avahi-tools bind-tools jq shadow iptables ip6tables cifs-utils"}
+        vars: {PKGS: "--no-cache vim e2fsprogs-extra htop curl wget bash bash-completion findutils openrc syslog-ng avahi-tools bind-tools jq shadow iptables ip6tables cifs-utils dosfstools parted sfdisk lsblk blkid"}
       - sed -i 's@/bin/ash@/bin/bash@g' /etc/passwd    
   enable-colorprompt:
     cmds:
@@ -27,6 +28,13 @@ tasks:
   label-root-part:
     cmds:
       - e2label /dev/sda2 "ROOT"
+  set-fstab:
+    cmds:
+      - mkdir /data
+      - |
+        cat <<EOF >> /etc/fstab
+        LABEL=DATA      /data           ext4    defaults,noatime,nosuid  0       0
+        EOF
   set-motd:
     cmds:
       - |

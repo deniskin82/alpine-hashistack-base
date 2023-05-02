@@ -11,7 +11,7 @@ iface eth0 inet dhcp
 DNSOPTS="-d local -n 8.8.8.8 8.8.4.4"
 TIMEZONEOPTS="-z UTC"
 PROXYOPTS="none"
-APKREPOSOPTS="-c -1" # -c enables community repositories and -1 adds the first mirror
+APKREPOSOPTS="http://mirror.fcix.net/alpine/v3.17/main http://mirror.fcix.net/alpine/v3.17/community" # -c enables community repositories and -1 adds the first mirror
 SSHDOPTS="-c openssh"
 NTPOPTS="-c chrony"
 DISKOPTS="-s 0 -m sys /dev/sda" # -L sets LVM and -e sets encryption

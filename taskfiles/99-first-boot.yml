@@ -2,15 +2,10 @@ version: '3'
 tasks:
   default:
     cmds:
-      - task: add-extras
       - task: bin-firstboot
       - task: init-firstboot
       - task: rc-update
 
-  add-extras:
-    cmds:
-      - task: addpkgs
-        vars: {PKGS: "--no-cache dosfstools parted sfdisk lsblk blkid"}
   bin-firstboot:
     cmds:
       - |
@@ -42,7 +37,3 @@ tasks:
     cmds:
       - chmod +x /etc/init.d/first-boot /usr/bin/first-boot
       - rc-update add first-boot
-
-  addpkgs:
-    cmds:
-      - apk add {{ .PKGS }}
