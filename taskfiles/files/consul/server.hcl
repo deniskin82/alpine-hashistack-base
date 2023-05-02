@@ -6,6 +6,6 @@ bootstrap_expect = 1
 disable_update_check = true
 disable_remote_exec = true
 enable_syslog = true
-ui_config{
+ui_config {
   enabled = true
 }

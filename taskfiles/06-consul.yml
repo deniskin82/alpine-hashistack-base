@@ -14,15 +14,17 @@ tasks:
   add-extras:
     cmds:
       - task: addpkgs
-        vars: {PKGS: "--no-cache consul --repository http://dl-cdn.alpinelinux.org/alpine/edge/community"}
+        vars: {PKGS: "--no-cache consul --repository ${ALPINE_MIRROR}/edge/community"}
   patch-initd:
     cmds:
       - sed -i "s@CONSUL_DATADIR@${CONSUL_DATADIR}@" ${TASKD_FILES}/consul/consul.initd
       - install -m755 -D ${TASKD_FILES}/consul/consul.initd /etc/init.d/consul
   get-tls:
     cmds:
-      - mkdir /etc/consul/certs
-      - curl -O /etc/consul/certs/ -sSL http://${PACKER_HTTP_ADDR}/vault/dk_ca_l1.crt http://${PACKER_HTTP_ADDR}/vault/consul.crt http://${PACKER_HTTP_ADDR}/vault/consul-key.pem
+      - mkdir /etc/consul/ssl
+      - curl --output-dir /etc/consul/ssl/ -sSL http://${PACKER_HTTP_ADDR}/vault/dk_ca_l1.crt
+      - curl --output-dir /etc/consul/ssl/ -sSL http://${PACKER_HTTP_ADDR}/vault/consul.crt
+      - curl --output-dir /etc/consul/ssl/ -sSL http://${PACKER_HTTP_ADDR}/vault/consul-key.pem
   patch-confd:
     vars:
       ENC_KEY:
@@ -34,6 +36,7 @@ tasks:
       - sed "s@CONSUL_DATADIR@${CONSUL_DATADIR}@;s@BIND_ETH@${BIND_ETH}@" -i ${TASKD_FILES}/consul/server.hcl
       - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/server.hcl /etc/consul/server.hcl
       - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/encrypt.hcl /etc/consul/encrypt.hcl
+      - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/tls.hcl /etc/consul/tls.hcl
   add-avahi-service:
     cmds:
       - install -m644 -D ${TASKD_FILES}/consul/consul.service /etc/avahi/services/consul.service
