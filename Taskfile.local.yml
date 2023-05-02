@@ -42,8 +42,11 @@ tasks:
   generate-keys:
     cmds:
       - task: make-encrypt
-      - task: generate-nomad-key
-      - task: generate-consul-key
+      - task: pull-ca-crt
+      - task: pull-nomad-key
+      - task: pull-nomad-crt
+      - task: pull-consul-key
+      - task: pull-consul-crt
   make-encrypt:
     cmds:
       - task: make-dir
@@ -54,18 +57,22 @@ tasks:
       - task: make-dir
         vars:
           DIR: http/tools
-  generate-nomad-key:
+  pull-nomad-key:
     cmds:
       - cp {{.VAULT_REPO}}/encrypt/nomad.key http/vault/nomad.key
     status:
-      - test -f {{.VAULT_REPO}}/encrypt/nomad.key
-      - test ! -f http/vault/nomad.key
-  generate-consul-key:
+  pull-consul-key:
     cmds:
       - cp {{.VAULT_REPO}}/encrypt/consul.key http/vault/consul.key
-    status:
-      - test -f {{.VAULT_REPO}}/encrypt/consul.key
-      - test ! -f http/vault/consul.key
+  pull-ca-crt:
+    cmds:
+      - cp {{.VAULT_REPO}}/tls/*ca_l1.crt http/vault/
+  pull-consul-crt:
+    cmds:
+      - cp {{.VAULT_REPO}}/tls/consul.crt {{.VAULT_REPO}}/tls/consul-key.pem http/vault/
+  pull-nomad-crt:
+    cmds:
+      - cp {{.VAULT_REPO}}/tls/nomad.crt {{.VAULT_REPO}}/tls/nomad-key.pem http/vault/
   download-nomad:
     cmds:
       - task: download-pkg
