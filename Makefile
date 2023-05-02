@@ -1,4 +1,12 @@
 PACKER_CACHE_DIR := $(builddir)/packer_cache
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Linux)
+accel=kvm
+endif
+ifeq ($(UNAME), Darwin)
+accel=hvm
+endif
 
 all: build
 
@@ -6,6 +14,8 @@ pre-build:
 	task -t Taskfile.local.yml
 
 build: pre-build
-	packer build -force -only qemu.alpine-base .
+	packer build \
+		-var "accel=$(accel)" \
+		-force -only qemu.alpine-base .
 
-.PHONY: build pre-build
+.PHONY: build pre-build test
