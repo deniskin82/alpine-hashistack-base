@@ -22,9 +22,12 @@ tasks:
   get-tls:
     cmds:
       - mkdir /etc/consul/ssl
-      - curl --output-dir /etc/consul/ssl/ -sSL http://${PACKER_HTTP_ADDR}/vault/dk_ca_l1.crt
-      - curl --output-dir /etc/consul/ssl/ -sSL http://${PACKER_HTTP_ADDR}/vault/consul.crt
-      - curl --output-dir /etc/consul/ssl/ -sSL http://${PACKER_HTTP_ADDR}/vault/consul-key.pem
+      - |
+        wget -P /etc/consul/ssl/ -q --show-progress --progress=bar:force:noscroll --continue \
+        http://${PACKER_HTTP_ADDR}/vault/dk_ca_l1.crt \
+        http://${PACKER_HTTP_ADDR}/vault/consul.crt \
+        http://${PACKER_HTTP_ADDR}/vault/consul-key.pem
+      - chgrp -R consul /etc/consul/ssl/
   patch-confd:
     vars:
       ENC_KEY:
