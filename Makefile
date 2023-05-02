@@ -5,7 +5,7 @@ ifeq ($(UNAME), Linux)
 accel=kvm
 endif
 ifeq ($(UNAME), Darwin)
-accel=hvm
+accel=hvf
 endif
 
 all: build
