@@ -3,7 +3,7 @@ UNAME := $(shell uname)
 
 ifeq ($(UNAME), Linux)
 accel=kvm
-display=""
+display="gtk"
 headless="false"
 endif
 ifeq ($(UNAME), Darwin)
