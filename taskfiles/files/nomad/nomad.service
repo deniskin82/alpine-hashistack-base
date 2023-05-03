@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+
+<service-group>
+  <name replace-wildcards="yes">nomad-%h</name>
+  <service protocol="ipv4">
+    <type>_nomad-http._tcp</type>
+    <port>4646</port>
+  </service>
+  <service protocol="ipv4">
+    <type>_nomad-rpc._tcp</type>
+    <port>4647</port>
+  </service>
+  <service protocol="ipv4">
+    <type>_nomad-serf._tcp</type>
+    <port>4648</port>
+    <txt-record>server=true</txt-record>
+  </service>
+</service-group>

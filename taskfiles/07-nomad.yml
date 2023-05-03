@@ -1,0 +1,51 @@
+version: '3'
+tasks:
+  default:
+    cmds:
+      - task: add-extras
+      - task: patch-initd
+      - task: get-tls
+      - task: patch-confd
+      - task: containerd-driver
+      - task: add-avahi-service
+      - task: enable-nomad
+  enable-nomad:
+    cmds:
+      - rc-update add nomad  
+  add-extras:
+    cmds:
+      - task: addpkgs
+        vars: {PKGS: "--no-cache nomad cni-plugins --repository ${ALPINE_MIRROR}/edge/community"}
+  patch-initd:
+    cmds:
+      - sed -i "s@NOMAD_DATADIR@${NOMAD_DATADIR}@" ${TASKD_FILES}/nomad/nomad.initd
+      - install -m755 -D ${TASKD_FILES}/nomad/nomad.initd /etc/init.d/nomad
+  get-tls:
+    cmds:
+      - mkdir /etc/nomad.d/ssl
+      - |
+        wget -P /etc/consul/ssl/ -q --show-progress --progress=bar:force:noscroll --continue \
+        http://${PACKER_HTTP_ADDR}/vault/dk_ca_l1.crt \
+        http://${PACKER_HTTP_ADDR}/vault/nomad.crt \
+        http://${PACKER_HTTP_ADDR}/vault/nomad-key.pem
+      - chgrp -R root /etc/nomad.d/ssl/
+  patch-confd:
+    vars:
+      ENC_KEY:
+        sh: curl -sSL http://${PACKER_HTTP_ADDR}/vault/nomad.key #nomad operator gossip keyring generate
+    cmds:
+      - cmd: sed "s@NOMAD_DATADIR@${NOMAD_DATADIR}@;s@ENCRYPT_KEY@{{.ENC_KEY}}@" -i ${TASKD_FILES}/nomad/server.hcl
+        silent: true
+      - install -m640 -o root -g root -D ${TASKD_FILES}/nomad/server.hcl /etc/nomad.d/server.hcl
+      - install -m644 -D ${TASKD_FILES}/nomad/nomad.confd /etc/conf.d/nomad
+  containerd-driver:
+    cmds:
+      - curl -sSL -o containerd-driver https://github.com/Roblox/nomad-driver-containerd/releases/download/v${CONTAINERD_DRIVER_VERSION}/containerd-driver{{if eq ARCH "arm64"}}-{{ARCH}}{{end}}
+      - install -D containerd-driver ${NOMAD_PLUGINS_DIR}/containerd-driver
+  add-avahi-service:
+    cmds:
+      - install -m644 -D ${TASKD_FILES}/nomad/nomad.service /etc/avahi/services/nomad.service
+
+  addpkgs:
+    cmds:
+      - apk add {{ .PKGS }}
