@@ -24,7 +24,7 @@ tasks:
     cmds:
       - mkdir /etc/nomad.d/ssl
       - |
-        wget -P /etc/consul/ssl/ -q --show-progress --progress=bar:force:noscroll --continue \
+        wget -P /etc/nomad.d/ssl/ -q --show-progress --progress=bar:force:noscroll --continue \
         http://${PACKER_HTTP_ADDR}/vault/dk_ca_l1.crt \
         http://${PACKER_HTTP_ADDR}/vault/nomad.crt \
         http://${PACKER_HTTP_ADDR}/vault/nomad-key.pem
