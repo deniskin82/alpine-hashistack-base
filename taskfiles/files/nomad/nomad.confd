@@ -7,4 +7,4 @@ nomad_opts="agent -server -config=/etc/nomad.d"
 # In that situation uncomment the following definition and ensure
 # it refers to the appropriate PEM files and URL.
 #
-#nomad_healthcheck_opts="-ca-cert=nomad-ca.pem -client-cert=cli.pem -client-key=cli-key.pem address=https://127.0.0.1:4646"
+nomad_healthcheck_opts="-ca-cert=NOMAD_CA_CRT -address=https://127.0.0.1:4646"
