@@ -10,3 +10,7 @@ tls {
     verify_server_hostname = false
   }
 }
+
+ports {
+  https = 8501
+}
