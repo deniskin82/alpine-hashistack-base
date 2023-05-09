@@ -20,7 +20,7 @@ respawn_delay=10
 healthcheck_timer=60
 
 depend() {
-  need localmount net
+  need localmount net netmount
   after cgroups containerd consul firewall
 }
 
