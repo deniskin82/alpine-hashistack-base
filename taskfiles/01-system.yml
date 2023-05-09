@@ -18,7 +18,7 @@ tasks:
   add-extras:
     cmds:
       - task: addpkgs
-        vars: {PKGS: "--no-cache vim e2fsprogs-extra htop curl wget bash bash-completion findutils openrc syslog-ng avahi-tools bind-tools jq shadow iptables ip6tables cifs-utils dosfstools parted sfdisk lsblk blkid"}
+        vars: {PKGS: "--no-cache vim e2fsprogs-extra htop curl wget mount umount bash bash-completion findutils openrc syslog-ng avahi-tools bind-tools jq shadow iptables ip6tables cifs-utils dosfstools parted sfdisk lsblk blkid"}
       - sed -i 's@/bin/ash@/bin/bash@g' /etc/passwd    
   enable-colorprompt:
     cmds:
