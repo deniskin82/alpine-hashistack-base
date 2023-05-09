@@ -1,0 +1,63 @@
+version: '3'
+tasks:
+  default:
+    cmds:
+      - task: service-sysinit
+      - task: service-boot
+      - task: service-default
+      - task: service-shutdown
+  service-sysinit:
+    vars:
+      SRVS: |
+        devfs
+        dmesg
+    cmds:
+      - |
+        {{range ( .SRVS | trim | splitLines ) -}}
+        rc-update add {{.}} sysinit
+        {{end -}}
+  service-boot:
+    vars:
+      SRVS: |
+        modules
+        sysctl
+        hostname
+        bootmisc
+        swclock
+        syslog-ng
+        swap
+        netmount
+    cmds:
+      - |
+        {{range ( .SRVS | trim | splitLines ) -}}
+        rc-update add {{.}} boot
+        {{end -}}
+  service-default:
+    vars:
+      SRVS: |
+        dbus
+        haveged
+        sshd
+        chronyd
+        local
+        networking
+        avahi-daemon
+        bluetooth
+        wpa_supplicant
+        wpa_cli
+    cmds:
+      - |
+        {{range ( .SRVS | trim | splitLines ) -}}
+        rc-update add {{.}} default
+        {{end -}}
+  service-shutdown:
+    vars:
+      SRVS: |
+        mount-ro
+        killprocs
+        savecache
+    cmds:
+      - |
+        {{range ( .SRVS | trim | splitLines ) -}}
+        rc-update add {{.}} shutdown
+        {{end -}}

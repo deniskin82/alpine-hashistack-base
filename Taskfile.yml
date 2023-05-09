@@ -7,7 +7,7 @@ includes:
   system: ./taskfiles/01-system.yml
   # users: ./taskfiles/02-users.yml
   # networking: ./taskfiles/03-networking.yml
-  # services: ./taskfiles/04-services.yml
+  services: ./taskfiles/04-services.yml
   containerd: ./taskfiles/05-containerd.yml
   consul: ./taskfiles/06-consul.yml
   nomad: ./taskfiles/07-nomad.yml
@@ -21,7 +21,7 @@ tasks:
       - task: system
       # - task: users
       # - task: networking
-      # - task: services
+      - task: services
       - task: containerd
       - task: consul
       - task: nomad
