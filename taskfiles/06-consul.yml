@@ -43,6 +43,9 @@ tasks:
   add-avahi-service:
     cmds:
       - install -m644 -D ${TASKD_FILES}/consul/consul.service /etc/avahi/services/consul.service
+  cleanup:
+    cmds:
+      - rm -fv /etc/consul/*.json.sample
 
   addpkgs:
     cmds:
