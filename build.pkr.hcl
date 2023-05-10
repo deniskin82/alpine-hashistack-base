@@ -102,7 +102,7 @@ source "qemu" "alpine-base" {
     "root<enter><wait>",
     "${var.root_password}<enter><wait>",
     "sed -i 's/^#PermitRootLogin .*/PermitRootLogin yes/g' /etc/ssh/sshd_config<enter>",
-    "service sshd restart<enter>",
+    "service sshd restart<enter><wait4s>",
     "exit<enter><wait20s>"
   ]
 
