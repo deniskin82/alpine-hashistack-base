@@ -1,6 +1,6 @@
 version: '3'
 
-dotenv: ['./taskfiles/files/base.cfg']
+dotenv: ['./taskfiles/files/base.cfg', './local.env']
 
 includes:
   # kernel: ./taskfiles/00-kernel.yml

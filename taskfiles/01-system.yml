@@ -10,6 +10,7 @@ tasks:
       - task: ll-alias
       - task: label-root-part
       - task: set-fstab
+      - task: set-netmount
   ca-certificates:
     cmds:
       - task: addpkgs
@@ -35,6 +36,15 @@ tasks:
         cat <<EOF >> /etc/fstab
         LABEL=DATA      /data           ext4    defaults,noatime,nosuid  0       0
         EOF
+  set-netmount:
+    cmds:
+      - mkdir /mnt/media
+      - |
+        cat <<EOF >> /etc/fstab
+        ${MOUNT_CIFS}
+        EOF
+    status:
+      - test -z $MOUNT_CIFS
   set-motd:
     cmds:
       - |

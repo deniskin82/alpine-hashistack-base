@@ -132,6 +132,11 @@ build {
     destination = "Taskfile.yml"
   }
 
+  provisioner "file" {
+    source = "local.env"
+    destination = "local.env"
+  }
+
   provisioner "shell" {
     execute_command = "{{.Vars}} /bin/sh -x '{{ .Path }}'"
     scripts = [

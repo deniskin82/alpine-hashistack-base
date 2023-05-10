@@ -3,3 +3,4 @@ target
 http/vault/*
 http/tools/*
 http/iso/*
+local.env
