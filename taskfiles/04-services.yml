@@ -35,16 +35,10 @@ tasks:
   service-default:
     vars:
       SRVS: |
-        dbus
-        haveged
         sshd
         chronyd
         local
         networking
-        avahi-daemon
-        bluetooth
-        wpa_supplicant
-        wpa_cli
     cmds:
       - |
         {{range ( .SRVS | trim | splitLines ) -}}
