@@ -1,5 +1,5 @@
 data_dir             = "NOMAD_DATADIR"
-datacenter           = "local"
+datacenter           = "NOMAD_DC"
 disable_update_check = true
 enable_syslog        = true
 plugin_dir           = "/usr/lib/nomad/plugins"

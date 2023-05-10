@@ -1,5 +1,5 @@
 data_dir = "CONSUL_DATADIR"
-datacenter = "local"
+datacenter = "CONSUL_DC"
 bind_addr = "{{ GetInterfaceIP \"BIND_ETH\" }}"
 client_addr = "0.0.0.0"
 server = true

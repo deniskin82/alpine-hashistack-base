@@ -36,7 +36,7 @@ tasks:
       - usermod -d ${CONSUL_DATADIR} consul
       - cmd: sed "s@ENCRYPT_KEY@{{.ENC_KEY}}@" -i ${TASKD_FILES}/consul/encrypt.hcl
         silent: true
-      - sed "s@CONSUL_DATADIR@${CONSUL_DATADIR}@;s@BIND_ETH@${BIND_ETH}@" -i ${TASKD_FILES}/consul/server.hcl
+      - sed "s@CONSUL_DATADIR@${CONSUL_DATADIR}@;s@BIND_ETH@${BIND_ETH}@;s@CONSUL_DC@${CONSUL_DC}@" -i ${TASKD_FILES}/consul/server.hcl
       - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/server.hcl /etc/consul/server.hcl
       - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/encrypt.hcl /etc/consul/encrypt.hcl
       - install -m640 -o root -g consul -D ${TASKD_FILES}/consul/tls.hcl /etc/consul/tls.hcl

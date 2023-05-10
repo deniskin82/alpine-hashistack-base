@@ -34,7 +34,7 @@ tasks:
       ENC_KEY:
         sh: curl -sSL http://${PACKER_HTTP_ADDR}/vault/nomad.key #nomad operator gossip keyring generate
     cmds:
-      - cmd: sed "s@NOMAD_DATADIR@${NOMAD_DATADIR}@;s@ENCRYPT_KEY@{{.ENC_KEY}}@" -i ${TASKD_FILES}/nomad/server.hcl
+      - cmd: sed "s@NOMAD_DATADIR@${NOMAD_DATADIR}@;s@ENCRYPT_KEY@{{.ENC_KEY}}@;s@NOMAD_DC@${NOMAD_DC}@" -i ${TASKD_FILES}/nomad/server.hcl
         silent: true
       - sed -i "s@NOMAD_CA_CRT@/etc/nomad.d/ssl/dk_ca_l1.crt@" ${TASKD_FILES}/nomad/nomad.confd
       - install -m640 -o root -g root -D ${TASKD_FILES}/nomad/server.hcl /etc/nomad.d/server.hcl
