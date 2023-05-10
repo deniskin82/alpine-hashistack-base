@@ -24,7 +24,7 @@ tasks:
         hostname
         bootmisc
         swclock
-        syslog-ng
+        syslog
         swap
         netmount
     cmds:
