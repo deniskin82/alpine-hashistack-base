@@ -17,4 +17,5 @@ tasks:
         auto br0
         iface br0 inet dhcp
             pre-up brctl addbr br0
+            post-down brctl delbr br0
         EOF
