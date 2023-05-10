@@ -20,7 +20,13 @@ tasks:
   add-extras:
     cmds:
       - task: addpkgs
-        vars: {PKGS: "--no-cache bridge vim e2fsprogs-extra htop curl wget mount umount bash bash-completion findutils openrc avahi-tools bind-tools jq shadow iptables ip6tables cifs-utils dosfstools parted sfdisk chrony tzdata lsblk blkid"}
+        vars: {PKGS: "--no-cache bridge \
+        vim e2fsprogs-extra htop curl wget \
+        mount umount bash bash-completion \
+        findutils openrc avahi-tools bind-tools \
+        jq shadow iptables ip6tables cifs-utils \
+        dosfstools parted sfdisk chrony tzdata \
+        lsblk blkid"}
       - sed -i 's@/bin/ash@/bin/bash@g' /etc/passwd    
   set-timezone:
     cmds:
