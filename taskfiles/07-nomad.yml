@@ -9,6 +9,7 @@ tasks:
       - task: containerd-driver
       - task: add-avahi-service
       - task: enable-nomad
+      - task: nomad-profiled
   enable-nomad:
     cmds:
       - rc-update add nomad  
@@ -47,7 +48,13 @@ tasks:
   add-avahi-service:
     cmds:
       - install -m644 -D ${TASKD_FILES}/nomad/nomad.service /etc/avahi/services/nomad.service
-
+  nomad-profiled:
+    cmds: # needed for nomad cli to work
+      - |
+        cat <<EOF > /etc/profile.d/nomad.sh
+        export NOMAD_ADDR=https://127.0.0.1:4646
+        export NOMAD_CACERT=/etc/nomad.d/ssl/dk_ca_l1.crt
+        EOF
   addpkgs:
     cmds:
       - apk add {{ .PKGS }}
