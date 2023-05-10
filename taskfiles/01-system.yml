@@ -8,6 +8,7 @@ tasks:
       - task: set-motd
       - task: enable-colorprompt
       - task: ll-alias
+      - task: set-timezone
       - task: label-root-part
       - task: set-fstab
       - task: set-netmount
@@ -19,8 +20,11 @@ tasks:
   add-extras:
     cmds:
       - task: addpkgs
-        vars: {PKGS: "--no-cache vim e2fsprogs-extra htop curl wget mount umount bash bash-completion findutils openrc syslog-ng avahi-tools bind-tools jq shadow iptables ip6tables cifs-utils dosfstools parted sfdisk lsblk blkid"}
+        vars: {PKGS: "--no-cache vim e2fsprogs-extra htop curl wget mount umount bash bash-completion findutils openrc syslog-ng avahi-tools bind-tools jq shadow iptables ip6tables cifs-utils dosfstools parted sfdisk chrony tzdata lsblk blkid"}
       - sed -i 's@/bin/ash@/bin/bash@g' /etc/passwd    
+  set-timezone:
+    cmds:
+      - setup-timezone -z $TARGET_TIMEZONE
   enable-colorprompt:
     cmds:
       - mv /etc/profile.d/color_prompt.sh.disabled /etc/profile.d/color_prompt.sh
