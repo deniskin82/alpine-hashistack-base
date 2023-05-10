@@ -8,7 +8,7 @@ tasks:
   add-extras:
     cmds:
       - task: addpkgs
-        vars: {PKGS: "--no-cache containerd nerdctl buildkit containerd-openrc --repository ${ALPINE_MIRROR}/edge/community"}
+        vars: {PKGS: "--no-cache containerd containerd-ctr nerdctl buildkit containerd-openrc --repository ${ALPINE_MIRROR}/edge/community"}
   enable-containerd:
     cmds:
       - rc-update add containerd boot
