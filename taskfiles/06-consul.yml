@@ -3,12 +3,12 @@ tasks:
   default:
     cmds:
       - task: add-extras
+      - task: cleanup
       - task: patch-initd
       - task: get-tls
       - task: patch-confd
       - task: add-avahi-service
       - task: enable-consul
-      - task: cleanup
   enable-consul:
     cmds:
       - rc-update add consul  
