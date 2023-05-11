@@ -20,7 +20,7 @@ tasks:
   add-extras:
     cmds:
       - task: addpkgs
-        vars: {PKGS: "--no-cache bridge \
+        vars: {PKGS: "--no-cache img bridge \
         vim e2fsprogs-extra htop curl wget \
         mount umount bash bash-completion \
         findutils openrc avahi-tools bind-tools \
