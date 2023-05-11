@@ -4,3 +4,4 @@ http/vault/*
 http/tools/*
 http/iso/*
 local.env
+.DS_Store
