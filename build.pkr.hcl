@@ -6,12 +6,12 @@ variable "root_password" {
 
 variable "iso_checksum" {
   type    = string
-  default = "3e699e0853fe43b328bdb643adb226a47026586ab3a64a8aec03fac570aca193"
+  default = "f61304d27574fcb3ff2c8e801180fef289cc469bd616f011a3f85a17c79a61ef"
 }
 
 variable "iso_file" {
   type    = string
-  default = "./http/iso/alpine-standard-3.17.3-x86_64.iso"
+  default = "./http/iso/alpine-standard-3.18.0-x86_64.iso"
 }
 
 variable "vm_name" {
@@ -21,7 +21,7 @@ variable "vm_name" {
 
 variable "version" {
   type    = string
-  default = "3.17.3"
+  default = "3.18.0"
 }
 
 variable "disk_size" {
