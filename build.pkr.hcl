@@ -26,7 +26,7 @@ variable "version" {
 
 variable "disk_size" {
   type    = string
-  default = "1G"
+  default = "2048"
 }
 
 variable "cpus" {
@@ -79,23 +79,23 @@ source "virtualbox-iso" "alpine-base" {
   iso_url      = var.iso_file
   iso_checksum = var.iso_checksum
   headless     = var.headless
-  disk_size    = "1024"
+  disk_size    = "${var.disk_size}"
+  hard_drive_interface = "sata"
   format       = "ova"
   ssh_username = "root"
   ssh_password = var.root_password
 
-  guest_os_type        = "other5xlinux-64"
+  guest_os_type        = "Linux_64"
   guest_additions_mode = "disable"
   boot_wait    = var.boot_wait
   boot_command = [
     "root<enter><wait>",
     "ifconfig eth0 up && udhcpc -i eth0<enter><wait5>",
     "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers<enter><wait>",
-    "ls -l<enter><wait5>",
     "setup-alpine -f answers<enter><wait10>",
     "${var.root_password}<enter><wait>",
     "${var.root_password}<enter>",
-    "<wait30s>y<enter><wait50s>",
+    "<wait30s>y<enter><wait40s>",
     "reboot<enter><wait40s>",
     "root<enter><wait>",
     "${var.root_password}<enter><wait>",
@@ -200,9 +200,11 @@ build {
   }
 
   // post-processors {
-  //   post-processor "compress" {
-  //     output = "output/disk.raw.tar.gz"
-  //     compression_level = 9
+  //   post-processor "shell-local" {
+  //     inline = [
+  //       "tar -C ${output_directory}/ -xf ${output_directory}/${var.vm_name}.raw.ova ${var.vm_name}.raw-disk001.vmdk"
+  //     ]
+  //     only = ["source.virtualbox-iso.alpine-base"]
   //   }
   // }
 }
