@@ -26,7 +26,7 @@ variable "version" {
 
 variable "disk_size" {
   type    = string
-  default = "2G"
+  default = "1G"
 }
 
 variable "cpus" {
@@ -56,13 +56,13 @@ variable "display" {
 }
 
 variable "boot_wait" {
-  default     = "20s"
+  default     = "30s"
   description = "if no accel, should set at least 30s"
 }
 
 variable "ssh_wait_timeout" {
   type    = string
-  default = "90s"
+  default = "110s"
 }
 
 variable "format" {
@@ -73,6 +73,48 @@ variable "format" {
 variable "output_directory" {
   type    = string
   default = "./target/build/"
+}
+
+source "virtualbox-iso" "alpine-base" {
+  iso_url      = var.iso_file
+  iso_checksum = var.iso_checksum
+  headless     = var.headless
+  disk_size    = "1024"
+  format       = "ova"
+  ssh_username = "root"
+  ssh_password = var.root_password
+
+  guest_os_type        = "other5xlinux-64"
+  guest_additions_mode = "disable"
+  boot_wait    = var.boot_wait
+  boot_command = [
+    "root<enter><wait>",
+    "ifconfig eth0 up && udhcpc -i eth0<enter><wait5>",
+    "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers<enter><wait>",
+    "ls -l<enter><wait5>",
+    "setup-alpine -f answers<enter><wait10>",
+    "${var.root_password}<enter><wait>",
+    "${var.root_password}<enter>",
+    "<wait30s>y<enter><wait50s>",
+    "reboot<enter><wait40s>",
+    "root<enter><wait>",
+    "${var.root_password}<enter><wait>",
+    "sed -i 's/^#PermitRootLogin .*/PermitRootLogin yes/g' /etc/ssh/sshd_config<enter>",
+    "service sshd restart<enter><wait10s>",
+    "exit<enter><wait20s>"
+  ]
+  http_directory = "http"
+
+  output_directory = "${var.output_directory}"
+  shutdown_command = "/sbin/poweroff"
+
+  ssh_wait_timeout = "${var.ssh_wait_timeout}"
+  vm_name          = "${var.vm_name}.${var.format}"
+
+  vboxmanage = [
+    [ "modifyvm", "{{.Name}}", "--memory", var.memory ],
+    [ "modifyvm", "{{.Name}}", "--cpus", var.cpus ],
+  ]  
 }
 
 source "qemu" "alpine-base" {
@@ -120,7 +162,7 @@ source "qemu" "alpine-base" {
 }
 
 build {
-  sources = ["source.qemu.alpine-base"]
+  sources = ["source.qemu.alpine-base", "source.virtualbox-iso.alpine-base"]
 
   provisioner "file" {
     source = "taskfiles"

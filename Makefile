@@ -12,16 +12,23 @@ headless="false"
 accel=hvf
 endif
 
-all: build
+all: qemu
 
 pre-build:
 	task -t Taskfile.local.yml
 
-build: pre-build
+qemu: pre-build
 	packer build \
 		-var "accel=$(accel)" \
 		-var "display=$(display)" \
 		-var "headless=$(headless)" \
 		-force -only qemu.alpine-base .
 
-.PHONY: build pre-build test
+virtualbox: pre-build
+	packer build \
+		-var "accel=$(accel)" \
+		-var "display=$(display)" \
+		-var "headless=$(headless)" \
+		-force -only virtualbox-iso.alpine-base .
+
+.PHONY: qemu pre-build virtualbox
