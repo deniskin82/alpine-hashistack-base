@@ -104,6 +104,7 @@ source "virtualbox-iso" "alpine-base" {
     "exit<enter><wait20s>"
   ]
   http_directory = "http"
+  nic_type = "82545EM"
 
   output_directory = "${var.output_directory}"
   shutdown_command = "/sbin/poweroff"
