@@ -1,5 +1,5 @@
 {
-  "cniVersion": "0.3.1",
+  "cniVersion": "0.4.0",
   "name": "bridge",
   "plugins": [
     {
@@ -21,8 +21,7 @@
     },
     {
       "type": "firewall",
-      "backend": "iptables",
-      "iptablesAdminChainName": "CNI-BRIDGE"
+      "backend": "iptables"
     },
     {
       "type": "portmap",
