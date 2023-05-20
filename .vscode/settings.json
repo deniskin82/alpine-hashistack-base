@@ -3,5 +3,12 @@
   "editor.insertSpaces": true,
   "editor.detectIndentation": true,
   "editor.tabSize": 2,
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/go-task/task/main/docs/static/schema.json": [
+      "**/Taskfile.yml",
+      "**/Taskfile.local.yml",
+      "**/taskfiles/*.yml"
+    ]
+  }
 }
