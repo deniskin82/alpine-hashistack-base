@@ -20,6 +20,11 @@
       "name": "lo"
     },
     {
+      "type": "firewall",
+      "backend": "iptables",
+      "iptablesAdminChainName": "CNI-BRIDGE"
+    },
+    {
       "type": "portmap",
       "capabilities": {
         "portMappings": true
