@@ -1,4 +1,13 @@
 version: '3'
+
+vars:
+  ALPINE_REPO: "${ALPINE_MIRROR}/edge/community"
+  PKGS: "containerd \
+        containerd-ctr \
+        nerdctl \
+        buildkit \
+        containerd-openrc"
+
 tasks:
   default:
     cmds:
@@ -8,13 +17,8 @@ tasks:
   add-extras:
     cmds:
       - task: addpkgs
-        vars: {PKGS: "--no-cache \
-        containerd \
-        containerd-ctr \
-        nerdctl \
-        buildkit \
-        containerd-openrc \
-        --repository ${ALPINE_MIRROR}/edge/community"}
+        vars: {PKGS: "--no-cache {{.PKGS}} --repository {{.ALPINE_REPO}}"}
+
   enable-containerd:
     cmds:
       - rc-update add containerd boot
