@@ -26,7 +26,7 @@ tasks:
       - mkdir /etc/nomad.d/ssl
       - |
         wget -P /etc/nomad.d/ssl/ -q --show-progress --progress=bar:force:noscroll --continue \
-        http://${PACKER_HTTP_ADDR}/vault/dk_ca_l1.crt \
+        http://${PACKER_HTTP_ADDR}/vault/local_ca_l1.crt \
         http://${PACKER_HTTP_ADDR}/vault/nomad.crt \
         http://${PACKER_HTTP_ADDR}/vault/nomad-key.pem
       - chgrp -R root /etc/nomad.d/ssl/
@@ -37,7 +37,7 @@ tasks:
     cmds:
       - cmd: sed "s@NOMAD_DATADIR@${NOMAD_DATADIR}@;s@ENCRYPT_KEY@{{.ENC_KEY}}@;s@NOMAD_DC@${NOMAD_DC}@" -i ${TASKD_FILES}/nomad/server.hcl
         silent: true
-      - sed -i "s@NOMAD_CA_CRT@/etc/nomad.d/ssl/dk_ca_l1.crt@" ${TASKD_FILES}/nomad/nomad.confd
+      - sed -i "s@NOMAD_CA_CRT@/etc/nomad.d/ssl/local_ca_l1.crt@" ${TASKD_FILES}/nomad/nomad.confd
       - install -m640 -o root -g root -D ${TASKD_FILES}/nomad/server.hcl /etc/nomad.d/server.hcl
       - install -m644 -D ${TASKD_FILES}/nomad/nomad.confd /etc/conf.d/nomad
   containerd-driver:
@@ -53,7 +53,7 @@ tasks:
       - |
         cat <<EOF > /etc/profile.d/nomad.sh
         export NOMAD_ADDR=https://127.0.0.1:4646
-        export NOMAD_CACERT=/etc/nomad.d/ssl/dk_ca_l1.crt
+        export NOMAD_CACERT=/etc/nomad.d/ssl/local_ca_l1.crt
         EOF
   addpkgs:
     cmds:

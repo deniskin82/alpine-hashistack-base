@@ -53,7 +53,7 @@ tls {
   http = true
   rpc  = true
 
-  ca_file   = "/etc/nomad.d/ssl/dk_ca_l1.crt"
+  ca_file   = "/etc/nomad.d/ssl/local_ca_l1.crt"
   cert_file = "/etc/nomad.d/ssl/nomad.crt"
   key_file  = "/etc/nomad.d/ssl/nomad-key.pem"
 
