@@ -1,5 +1,5 @@
 {
-  "cniVersion": "0.4.0",
+  "cniVersion": "1.0.0",
   "name": "bridge",
   "plugins": [
     {
@@ -7,12 +7,16 @@
       "bridge": "cni0",
       "isGateway": true,
       "ipMasq": true,
-      "forceAddress": true,
-      "hairpinMode": false,
+      "hairpinMode": true,
       "ipam": {
         "type": "host-local",
         "ranges": [
-          [{"subnet": "172.19.0.0/24"}]
+          [
+            {
+              "subnet": "172.19.0.0/24",
+              "gateway": "172.19.0.1"
+            }
+          ]
         ],
       "routes": [{"dst": "0.0.0.0/0"}]
       }
@@ -30,6 +34,7 @@
       "type": "portmap",
       "capabilities": {"portMappings": true},
       "snat": true
-    }
+    },
+    {"type": "tuning"}
   ]
 }
