@@ -7,6 +7,8 @@
       "bridge": "cni0",
       "isGateway": true,
       "ipMasq": true,
+      "forceAddress": true,
+      "hairpinMode": false,
       "ipam": {
         "type": "host-local",
         "ranges": [
@@ -21,13 +23,12 @@
     },
     {
       "type": "firewall",
-      "backend": "iptables"
+      "backend": "iptables",
+      "iptablesAdminChainName": "NOMAD-ADMIN"
     },
     {
       "type": "portmap",
-      "capabilities": {
-        "portMappings": true
-      },
+      "capabilities": {"portMappings": true},
       "snat": true
     }
   ]
