@@ -16,6 +16,9 @@ tasks:
     cmds:
       - task: addpkgs
         vars: {PKGS: "--no-cache ca-certificates alpine-conf"}
+      - |
+        wget -P /usr/local/share/ca-certificates/ -q --show-progress --progress=bar:force:noscroll --continue \
+        http://${PACKER_HTTP_ADDR}/vault/local_ca_l1.crt
       - update-ca-certificates
   add-extras:
     cmds:
