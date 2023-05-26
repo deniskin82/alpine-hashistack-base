@@ -168,7 +168,7 @@ version = 2
 
       [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
         [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
-          endpoint = ["http://192.168.1.125:5001","https://registry-1.docker.io"]
+          endpoint = ["https://mirror.service.consul:5001","https://registry-1.docker.io"]
         [plugins."io.containerd.grpc.v1.cri".registry.mirrors."mirror.service.consul:5001"]
           endpoint = ["https://mirror.service.consul:5001"]
 
