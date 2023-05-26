@@ -3,8 +3,8 @@ version: '3'
 tasks:
   default:
     cmds:
-      - task: ca-certificates
       - task: add-extras
+      - task: ca-certificates
       - task: set-motd
       - task: enable-colorprompt
       - task: ll-alias
