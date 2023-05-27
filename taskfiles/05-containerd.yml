@@ -15,6 +15,7 @@ tasks:
       - task: enable-containerd
       - task: add-cni-config
       - task: add-ctr-config
+      - task: add-ctr-initd
   add-extras:
     cmds:
       - task: addpkgs
@@ -29,7 +30,12 @@ tasks:
       - install -m644 -D ${TASKD_FILES}/cni/10-nomad.conflist /etc/cni/net.d/10-nomad.conflist
   add-ctr-config:
     cmds:
+      - sed "s@CTR_DATADIR@${CTR_DATADIR}@" -i ${TASKD_FILES}/containerd/config.toml
       - install -m644 -D ${TASKD_FILES}/containerd/config.toml /etc/containerd/config.toml
+  add-ctr-initd:
+    cmds:
+      - sed "s@CTR_DATADIR@${CTR_DATADIR}@" -i ${TASKD_FILES}/containerd/containerd.initd
+      - install -m755 -D ${TASKD_FILES}/containerd/containerd.initd /etc/init.d/containerd
 
   addpkgs:
     cmds:
