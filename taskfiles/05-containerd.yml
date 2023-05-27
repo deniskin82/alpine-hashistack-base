@@ -12,10 +12,10 @@ tasks:
   default:
     cmds:
       - task: add-extras
-      - task: enable-containerd
       - task: add-cni-config
       - task: add-ctr-config
       - task: add-ctr-initd
+      - task: enable-containerd
   add-extras:
     cmds:
       - task: addpkgs
