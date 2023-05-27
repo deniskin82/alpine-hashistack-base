@@ -28,7 +28,7 @@ depend() {
 
 start_pre() {
   checkpath -f -m "$log_mode" -o "$log_owner" "$log_file" "$err_file"
-  checkpath -d -m 2750 -o "$command_user" $DATA_DIR
+  checkpath -d -m 2711 -o "$command_user" $DATA_DIR
 }
 
 reload() {
