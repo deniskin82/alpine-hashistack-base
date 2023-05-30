@@ -1,0 +1,28 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task: install-monit
+      - task: config-monit
+      - task: initd-monit
+      - task: enable-monit
+
+  install-monit:
+    cmds:
+      - curl -sSL -o monit.tar.gz http://${PACKER_HTTP_ADDR}/tools/monit-${MONIT_VERSION}-linux-x64-musl.tar.gz
+      - mkdir monit /etc/monit.d/ 
+      - tar --no-same-permissions --strip-components=1 -C monit -zxf monit.tar.gz monit-${MONIT_VERSION}/bin/monit
+      - install -m0755 -D monit/bin/monit /usr/bin/monit
+      - rm -fr monit monit.tar.gz
+  config-monit:
+    cmds:
+      - sed -i "s@MONIT_DATADIR@${MONIT_DATADIR}@g" ${TASKD_FILES}/monit/monitrc
+      - install -m600 -D ${TASKD_FILES}/monit/monitrc /etc/monitrc
+  initd-monit:
+    cmds:
+      - sed -i "s@MONIT_DATADIR@${MONIT_DATADIR}@g" ${TASKD_FILES}/monit/monit.initd
+      - install -m755 -D ${TASKD_FILES}/monit/monit.initd /etc/init.d/monit
+  enable-monit:
+    cmds:
+      - rc-update add monit

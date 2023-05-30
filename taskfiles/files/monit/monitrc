@@ -1,0 +1,12 @@
+set daemon  30
+set log syslog
+set log /var/log/monit.log
+set statefile MONIT_DATADIR/.monit.state
+set idfile MONIT_DATADIR/.monit.id
+
+include /etc/monit.d/*
+
+set httpd port 2812 and
+  use address localhost
+  allow localhost
+  allow admin:monit

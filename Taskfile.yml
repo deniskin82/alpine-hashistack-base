@@ -11,6 +11,7 @@ includes:
   containerd: ./taskfiles/05-containerd.yml
   consul: ./taskfiles/06-consul.yml
   nomad: ./taskfiles/07-nomad.yml
+  monit: ./taskfiles/10-monit.yml
   firstboot: ./taskfiles/99-first-boot.yml
 
 tasks:
@@ -25,4 +26,5 @@ tasks:
       - task: containerd
       - task: consul
       - task: nomad
+      - task: monit
       - task: firstboot
