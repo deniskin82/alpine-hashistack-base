@@ -39,6 +39,7 @@ tasks:
       - task: download-consul
       - task: download-vault
       - task: download-gotask
+      - task: download-monit
   generate-keys:
     cmds:
       - task: make-encrypt
@@ -99,6 +100,13 @@ tasks:
         vars: {
           SRC: "https://github.com/go-task/task/releases/download/${TASK_VERSION}/task_linux_amd64.tar.gz",
           DST: "http/tools/task_linux_amd64_${TASK_VERSION}.tar.gz"
+        }
+  download-monit:
+    cmds:
+      - task: download-pkg
+        vars: {
+          SRC: "https://mmonit.com/monit/dist/binary/${MONIT_VERSION}/monit-${MONIT_VERSION}-linux-x64-musl.tar.gz",
+          DST: "http/tools/monit-${MONIT_VERSION}-linux-x64-musl.tar.gz"
         }
   download-pkg:
     cmds:
