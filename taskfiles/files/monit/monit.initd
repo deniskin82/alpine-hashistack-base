@@ -20,6 +20,7 @@ extra_commands="configtest"
 extra_started_commands="reload"
 
 depend() {
+  need localmount
 	use net
   after containerd consul nomad
 }
