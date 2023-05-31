@@ -6,6 +6,7 @@ tasks:
       - task: install-monit
       - task: config-monit
       - task: initd-monit
+      - task: checks-monit
       - task: enable-monit
 
   install-monit:
@@ -23,6 +24,9 @@ tasks:
     cmds:
       - sed -i "s@MONIT_DATADIR@${MONIT_DATADIR}@g" ${TASKD_FILES}/monit/monit.initd
       - install -m755 -D ${TASKD_FILES}/monit/monit.initd /etc/init.d/monit
+  checks-monit:
+    cmds:
+      - install -m600 -D ${TASKD_FILES}/monit/*.monit.conf /etc/monit.d/
   enable-monit:
     cmds:
       - rc-update add monit
