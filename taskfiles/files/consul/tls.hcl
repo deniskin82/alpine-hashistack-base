@@ -1,6 +1,6 @@
 tls {
   defaults {
-    verify_incoming = true
+    verify_incoming = false
     verify_outgoing = true
     ca_file = "/etc/consul/ssl/local_ca_l1.crt"
     cert_file = "/etc/consul/ssl/consul.crt"
